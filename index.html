@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda de Bebidas</title>
+  <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+
+      <a href="./index.html">
+        <picture>
+          <source media="(min-width:600px)" srcset="./images/logo-dark.png">
+          <img src="./images/logo-small.png" alt="Logo de la tienda">
+        </picture>
+      </a>
+      <ul class="nav">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="#">Tienda</a></li>
+        <li><a href="#">Nosotros</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+      <input id="search" type="text" placeholder="Buscar por Nombre" onchange="filtrarPorNombre()">
+      <!-- <button class="btn" onclick="buscarPorNombre()"> Buscar por Nombre</button> -->
+    </div>
+  </header>
+
+  <div id="productos" class="productos">
+  </div>
+
+  <script src="./js/main.js"></script>
+</body>
+
+</html>
