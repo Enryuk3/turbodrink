@@ -8,14 +8,14 @@
   --black: #000000;
   --very-light-pink: #c7c7c7;
   --text-input-field: #f7f7f7;
-  --hospital-green: #acd9b2;
+  --hospital-blue: #73ade7;
   --sm: 14px;
   --md: 16px;
   --lg: 18px;
 }
-html{
+/* html{
   font-size: 62.5%;
-}
+} */
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -47,7 +47,6 @@ header .container picture{
 header .container picture img{
   width: auto;
   height: 40px;
-
 }
  
 header .nav{
@@ -57,6 +56,14 @@ header .nav{
 header ul{
   height: 60px;
 }
+header ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 60px;
+} 
 header .nav li{
   list-style: none;
   margin-right: 2rem;
@@ -69,43 +76,138 @@ header .nav li a{
   border-radius: 8px;
 }
 header .nav li a:hover{
-  border: 1px solid var(--hospital-green);
-  color: var(--hospital-green);
+  border: 1px solid var(--hospital-blue);
+  color: var(--hospital-blue);
 }
-/* input header */
-header #search{
+/* Icono carrito */
+.navbar-shopping-cart{
+  position: relative;
+  cursor: pointer;
+}
+.navbar-shopping-cart div {
+  width: 16px;
+  height: 16px;
+  background-color: #73ade7 ;
+  border-radius: 50%;
+  font-size: var(--sm);
+  font-weight: bold;
+  position: absolute;
+  top: -6px;
+  right: -3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Search */
+main #search{
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   width: 100%;
   min-width: 220px;
   max-width: 250px;
   padding: 0.4rem;
+  padding-top: 1.8rem;
   border: none;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid var(--very-light-pink);
   background-color: transparent;
-  color: #fff;
+  color:var(--black);
   font-size: var(--md);
   font-weight: bold;
 }
-header #search:focus{
+main #search:focus{
   outline: none;
 }
-header .btn{
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+
+/* Carrito contenido */
+.product-detail {
+  width: 360px;
+  padding: 24px;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0;
+  background-color: var(--white);
+  visibility: hidden;
+  z-index: 2;
 }
-header .btn:hover{
-  background-color: #4CAF50;
-  color: #fff;
+.active{
+  visibility: visible;
+
+}
+
+.title-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.title-container img {
+  transform: rotate(180deg);
+  margin-right: 14px;
+}
+.title {
+  font-size: var(--lg);
+  font-weight: bold;
+}
+/* .order {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+  background-color: var(--text-input-field);
+  margin-bottom: 24px;
+  border-radius: 8px;
+  padding: 0 24px;
+}
+.order p:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+}
+.order p span:nth-child(1) {
+  font-size: var(--md);
+  font-weight: bold;
+}
+.order p:nth-child(2) {
+  text-align: end;
+  font-weight: bold;
+} */
+.shopping-cart {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.shopping-cart figure {
+  margin: 0;
+}
+.shopping-cart figure img {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+.shopping-cart p:nth-child(2) {
+  color: var(--very-light-pink);
+}
+.shopping-cart p:nth-child(3) {
+  font-size: var(--md);
+  font-weight: bold;
+}
+.primary-button {
+  background-color: var(--hospital-blue);
+  border-radius: 8px;
+  border: none;
+  color: var(--white);
+  width: 100%;
+  cursor: pointer;
+  font-size: var(--md);
+  font-weight: bold;
+  height: 50px;
 }
 
 /* Productos */
 .productos {
-  margin:2rem auto;
+  margin:1rem auto;
   max-width: 1200px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -154,6 +256,12 @@ header .btn:hover{
   margin-top: 0;
   margin-bottom: 0;
   color: var(--very-light-pink);
+}
+
+@media (max-width: 640px) {
+  .product-detail {
+    width: 100%;
+  }
 }
 
 @media (min-width: 768px){
