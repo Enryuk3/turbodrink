@@ -77,7 +77,7 @@ const mostrarProductos = (element) => {
             <p class="precio">$<span>${producto.precio}</span></p>
           </div>
           <figure>
-            <img src="../images/icons/bt_add_to_cart.svg" class="btn-agregar" data-id="${producto.id}" alt="agregar">
+            <img src="./images/icons/bt_add_to_cart.svg" class="btn-agregar" data-id="${producto.id}" alt="agregar">
           </figure>
         </div>
       </div>`
@@ -119,14 +119,14 @@ const showCart = () => {
   sidebar.innerHTML = "";
   cart.forEach((element) => {
     let {nombre, precio, image, cantidad, id} = element;
-    sidebar.innerHTML += /* html */`
+    sidebar.innerHTML += `
       <div class="shopping-cart">
         <figure>
           <img src="${image}" alt="${nombre}">
         </figure>
           <p>${nombre}</p>
           <p>$<span>${precio*cantidad}</span></p>
-        <img src="../images/icons/icon_close.png" class="btn-borrar" data-id="${id}" alt="close">
+        <img src="./images/icons/icon_close.png" class="btn-borrar" data-id="${id}" alt="close">
       </div>`
     localStorage.setItem("cart", JSON.stringify(cart))
     updateCount();
