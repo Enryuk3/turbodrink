@@ -25,13 +25,33 @@
         <li><a href="#">Nosotros</a></li>
         <li><a href="#">Contacto</a></li>
       </ul>
-      <input id="search" type="text" placeholder="Buscar por Nombre" onchange="filtrarPorNombre()">
-      <!-- <button class="btn" onclick="buscarPorNombre()"> Buscar por Nombre</button> -->
+      <ul>
+        <li class="navbar-shopping-cart">
+          <img src="./images/icons/icon_shopping_cart.svg" alt="shopping cart">
+          <div>0</div>
+        </li>
+      </ul>
     </div>
   </header>
+  <main>
+    <aside class="product-detail">
 
-  <div id="productos" class="productos">
-  </div>
+      <div class="title-container">
+        <img src="../images/icons/flechita.svg" alt="arrow">
+        <p class="title">Mi orden</p>
+      </div>
+      
+      <div class="my-order-content">
+      </div>
+
+    </aside>
+    
+    <input id="search" type="text" placeholder="¿Qué estás buscando?">
+
+    <div id="productos" class="productos">
+    </div>
+
+  </main>
 
   <script src="./js/main.js"></script>
 </body>
