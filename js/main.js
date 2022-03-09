@@ -40,6 +40,13 @@ const productos = [{
     precio: 500,
     stock: 20,
     image: "https://api.lorem.space/image/drink?w=300&h=240&hash=85624ep"
+  },
+  {
+    id: 7,
+    nombre: "Cachina",
+    precio: 500,
+    stock: 20,
+    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=85644pu"
   }
 ]
 
@@ -169,8 +176,14 @@ const updateCount = () =>{
 
 //Filtrar productos atravez de la busqueda
 const filtrarPorNombre = () => {
-  let loQueQuieroBuscar = document.getElementById("search").value;
-  let filtered = productos.filter((producto) => producto.nombre.toLowerCase() === loQueQuieroBuscar.toLowerCase());
+  let loQueQuieroBuscar = document.getElementById("search").value.replace(/ /g, "");
+  let filtered = productos.filter((producto) => {
+    producto.nombre.toLowerCase().includes(loQueQuieroBuscar.toLowerCase())
+  })
+
+  if(loQueQuieroBuscar==''){
+    filtered = productos
+  } 
 
   if (filtered.length > 0) {
     productosDiv.innerHTML = "";
