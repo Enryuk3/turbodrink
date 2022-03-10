@@ -177,9 +177,8 @@ const updateCount = () =>{
 //Filtrar productos atravez de la busqueda
 const filtrarPorNombre = () => {
   let loQueQuieroBuscar = document.getElementById("search").value.replace(/ /g, "");
-  let filtered = productos.filter((producto) => {
-    producto.nombre.toLowerCase().includes(loQueQuieroBuscar.toLowerCase())
-  })
+  let filtered = productos.filter((producto) => producto.nombre.toLowerCase().includes(loQueQuieroBuscar.toLowerCase())
+  )
 
   if(loQueQuieroBuscar==''){
     filtered = productos
