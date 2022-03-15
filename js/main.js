@@ -94,6 +94,11 @@ const mostrarProductos = (element) => {
     e.addEventListener("click", (e) => {
       let cardPadre = e.target.parentElement;
       addToCart(cardPadre);
+      iziToast.success({
+        id:'success',
+        title: 'Listo',
+        message: 'Producto agregado al carrito'
+    });
     })
   )
 }
@@ -182,7 +187,7 @@ const filtrarPorNombre = () => {
 
   if(loQueQuieroBuscar==''){
     filtered = productos
-  } 
+  }
 
   if (filtered.length > 0) {
     productosDiv.innerHTML = "";
