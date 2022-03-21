@@ -1,57 +1,3 @@
-//Json
-const productos = [{
-    id: 1,
-    nombre: "Gaseosa",
-    precio: 200,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=88g162sg"
-  },
-  {
-    id: 2,
-    nombre: "Cerveza",
-    precio: 300,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=xfgqa0ij"
-  },
-  {
-    id: 3,
-    nombre: "Mate",
-    precio: 150,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=4f521331s"
-  },
-  {
-    id: 4,
-    nombre: "Vodka",
-    precio: 300,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=vmtfoqi3"
-  },
-  {
-    id: 5,
-    nombre: "Ron",
-    precio: 400,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=e2npuf5t"
-  },
-  {
-    id: 6,
-    nombre: "Pisco",
-    precio: 500,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=85624ep"
-  },
-  {
-    id: 7,
-    nombre: "Cachina",
-    precio: 500,
-    stock: 20,
-    image: "https://api.lorem.space/image/drink?w=300&h=240&hash=85644pu"
-  }
-]
-
-
-
 //Funciones
 const productosDiv = document.getElementById("productos");
 const btnCart = document.querySelector(".navbar-shopping-cart")
@@ -70,35 +16,36 @@ arrow.addEventListener("click", () => {
   divCart.classList.toggle("active")
 })
 
+function getData() {
+  let url = 'https://shop-api-production.up.railway.app/products'
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => data.forEach(element => mostrarProductos(element)))
+    .catch(error => console.log(error))
+}
 
-
-
-const mostrarProductos = (element) => {
-  element.forEach(producto => {
-    productosDiv.innerHTML += `
+function mostrarProductos(product) {
+  productosDiv.innerHTML += `
       <div class="producto">
-        <img src="${producto.image}" alt="">
+        <div class="producto-img">
+          <img src="${product.url_image || "https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"}" alt="${product.name}">
+        </div>
         <div class="product-info">
           <div>
-            <p class="nombre">${producto.nombre}</p>
-            <p class="precio">$<span>${producto.precio}</span></p>
+            <p class="nombre">${product.name}</p>
+            <p class="precio">$<span>${product.price}</span></p>
           </div>
           <figure>
-            <img src="./images/icons/bt_add_to_cart.svg" class="btn-agregar" data-id="${producto.id}" alt="agregar">
+            <img src="./images/icons/bt_add_to_cart.svg" class="btn-agregar" data-id="${product.id}" alt="agregar">
           </figure>
         </div>
       </div>`
-  })
+
   const btnAgregar = document.querySelectorAll(".btn-agregar");
   btnAgregar.forEach((e) =>
     e.addEventListener("click", (e) => {
       let cardPadre = e.target.parentElement;
       addToCart(cardPadre);
-      iziToast.success({
-        id:'success',
-        title: 'Listo',
-        message: 'Producto agregado al carrito'
-    });
     })
   )
 }
@@ -112,17 +59,17 @@ const addToCart = (cardPadre) => {
     image: cardPadre.parentElement.parentElement.querySelector("img").src,
     id: Number(cardPadre.querySelector("img").getAttribute("data-id")),
   };
-  
+
   let productoEncontrado = cart.find(
     (element) => element.id === producto.id
   );
-  
+
   if (productoEncontrado) {
     productoEncontrado.cantidad++;
   } else {
     cart.push(producto);
   }
-  console.log(cart);
+  console.log(cart, " elementos en cart");
   showCart();
 }
 
@@ -130,7 +77,13 @@ const addToCart = (cardPadre) => {
 const showCart = () => {
   sidebar.innerHTML = "";
   cart.forEach((element) => {
-    let {nombre, precio, image, cantidad, id} = element;
+    let {
+      nombre,
+      precio,
+      image,
+      cantidad,
+      id
+    } = element;
     sidebar.innerHTML += `
       <div class="shopping-cart">
         <figure>
@@ -174,16 +127,18 @@ const escucharBotonesSidebar = () => {
   });
 };
 
-const updateCount = () =>{
-  let total = cart.reduce((acc,ite) => acc+ite.cantidad,0)
+const updateCount = () => {
+  let total = cart.reduce((acc, ite) => acc + ite.cantidad, 0)
   document.querySelector(".navbar-shopping-cart div").textContent = total;
 }
 
 //Filtrar productos atravez de la busqueda
-const filtrarPorNombre = () => {
-  let loQueQuieroBuscar = document.getElementById("search").value.replace(/ /g, "");
-  let filtered = productos.filter((producto) => producto.nombre.toLowerCase().includes(loQueQuieroBuscar.toLowerCase())
-  )
+/* const filtrarPorNombre = (valor) => {
+
+  let loQueQuieroBuscar = valor
+  console.log(data)
+  let filtered = data.filter((producto) => producto.nombre.toLowerCase().includes(loQueQuieroBuscar.toLowerCase()))
+
 
   if(loQueQuieroBuscar==''){
     filtered = productos
@@ -193,12 +148,71 @@ const filtrarPorNombre = () => {
     productosDiv.innerHTML = "";
     mostrarProductos(filtered)
   } else {
-    document.getElementById("productos").innerHTML = `<p>No se encontró el producto</p>`;
+    document.getElementById("productos").innerHTML = `<p>No se encontrÃ³ el producto</p>`;
   }
-  
-}
-search.addEventListener("change",filtrarPorNombre)
 
-mostrarProductos(productos);
+} */
+function searchInput(name) {
+  fetch(`https://shop-api-production.up.railway.app/search?name=${name}`)
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("productos").textContent = '';
+      data.forEach(element => mostrarProductos(element))
+    })
+}
+
+inputSearch.addEventListener('input', (e) => {
+  let name = e.target.value;
+  searchInput(name)
+})
+
+function getCategories() {
+  let url = 'https://shop-api-production.up.railway.app/categories'
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => data.forEach(element => showByCategories(element)))
+    .catch(error => console.log(error))
+}
+
+
+//renderizando categorias
+let categoriesDiv = document.querySelector(".sidebar-body")
+
+function showByCategories(element) {
+  categoriesDiv.innerHTML += `
+  <a class="btn" data-id="${element.id}">
+  <div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24"
+      width="24" xmlns="http://www.w3.org/2000/svg">
+      <path fill="none" d="M0 0h24v24H0z"></path>
+      <path
+        d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z">
+      </path>
+    </svg><span>${element.name}</span>
+  </div>
+  </a>
+  <button></button>
+  `
+  const btnCategories = document.querySelectorAll(".btn")
+  btnCategories.forEach((e) =>
+    e.addEventListener("click", (e) => {
+      let categoryId = (e.target.getAttribute("data-id"))
+      orderByCategories(categoryId)
+    })
+  )
+}
+
+
+//filtrar por categorias
+function orderByCategories(id) {
+  productosDiv.innerHTML = ``;
+  fetch(`https://shop-api-production.up.railway.app/order_by_category?category_id=${id}`)
+    .then((response) => response.json())
+    .then((data) => data.forEach(element => mostrarProductos(element)))
+    .catch(error => console.log(error))
+}
+
+
+getData();
 showCart();
 escucharBotonesSidebar();
+getCategories()

@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tienda de Bebidas</title>
   <link rel="stylesheet" href="./styles/style.css">
-  <link rel="stylesheet" href="./styles/iziToast.min.css">
 </head>
 
 <body>
@@ -36,24 +35,28 @@
   </header>
   <main>
     <aside class="product-detail">
-
       <div class="title-container">
         <img src="./images/icons/flechita.svg" alt="arrow">
         <p class="title">Mi orden</p>
       </div>
-      
       <div class="my-order-content">
       </div>
-
     </aside>
-    
-    <input id="search" type="text" placeholder="¿Qué estás buscando?">
+
+    <input id="search" autocomplete="off" type="text" placeholder="¿Qué estás buscando?">
+    <div class="container-sidebar">
+      <div class="sidebar">
+        <div class="sidebar-body">
+        </div>
+      </div>
+    </div>
 
     <div id="productos" class="productos">
+
     </div>
 
   </main>
-  <script src="./js/iziToast.min.js"></script>
+
   <script src="./js/main.js"></script>
 </body>
 
