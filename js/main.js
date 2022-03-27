@@ -5,6 +5,7 @@ const divCart = document.querySelector(".product-detail")
 const sidebar = document.querySelector(".my-order-content")
 const arrow = document.querySelector(".title-container img")
 const inputSearch = document.getElementById("search")
+const totalCart = document.querySelector(".total-cart")
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -46,6 +47,11 @@ function mostrarProductos(product) {
     e.addEventListener("click", (e) => {
       let cardPadre = e.target.parentElement;
       addToCart(cardPadre);
+      iziToast.success({
+        id:'success',
+        title: 'OK',
+        message: 'Producto agregado al carrito'
+      });
     })
   )
 }
@@ -60,16 +66,14 @@ const addToCart = (cardPadre) => {
     id: Number(cardPadre.querySelector("img").getAttribute("data-id")),
   };
 
-  let productoEncontrado = cart.find(
-    (element) => element.id === producto.id
-  );
+  let productoEncontrado = cart.find((e) => e.id === producto.id);
 
   if (productoEncontrado) {
     productoEncontrado.cantidad++;
   } else {
     cart.push(producto);
   }
-  console.log(cart, " elementos en cart");
+  // console.log(cart);
   showCart();
 }
 
@@ -77,27 +81,27 @@ const addToCart = (cardPadre) => {
 const showCart = () => {
   sidebar.innerHTML = "";
   cart.forEach((element) => {
-    let {
-      nombre,
-      precio,
-      image,
-      cantidad,
-      id
-    } = element;
-    sidebar.innerHTML += `
+    let {nombre, precio, image, cantidad, id} = element;
+    sidebar.innerHTML += /* html */`
       <div class="shopping-cart">
         <figure>
           <img src="${image}" alt="${nombre}">
         </figure>
+        <div>
           <p>${nombre}</p>
-          <p>$<span>${precio*cantidad}</span></p>
-        <img src="./images/icons/icon_close.png" class="btn-borrar" data-id="${id}" alt="close">
+          <p>Cantidad: ${cantidad}</p>
+        </div>
+        <p>$<span>${precio*cantidad}</span></p>
+        <button class="btn-restar" data-id="${id}">-</button>
+        <button class="btn-borrar" data-id="${id}">x</button>
       </div>`
     localStorage.setItem("cart", JSON.stringify(cart))
     updateCount();
+    updateTotalCart();
   })
 }
 
+//Restar producto al hacer click
 const restarProducto = (productoRestar) => {
   let productoEncontrado = cart.find(
     (element) => element.id === Number(productoRestar)
@@ -111,8 +115,9 @@ const restarProducto = (productoRestar) => {
   showCart();
 };
 
+//Borrar producto al hacer  click
 const borrarProducto = (productoBorrar) => {
-  cart = cart.filter((element) => element.id !== Number(productoBorrar));
+  cart = cart.filter(element => element.id !== Number(productoBorrar));
   showCart();
 };
 
@@ -131,27 +136,14 @@ const updateCount = () => {
   let total = cart.reduce((acc, ite) => acc + ite.cantidad, 0)
   document.querySelector(".navbar-shopping-cart div").textContent = total;
 }
+/* Sumatoria de precios del total del carrito */
+const updateTotalCart = () => {
+  let total = cart.reduce((acc, ite) => acc + ite.precio, 0)
+  console.log(total)
+  
+  document.querySelector(".total-cart").textContent = total;
+}
 
-//Filtrar productos atravez de la busqueda
-/* const filtrarPorNombre = (valor) => {
-
-  let loQueQuieroBuscar = valor
-  console.log(data)
-  let filtered = data.filter((producto) => producto.nombre.toLowerCase().includes(loQueQuieroBuscar.toLowerCase()))
-
-
-  if(loQueQuieroBuscar==''){
-    filtered = productos
-  }
-
-  if (filtered.length > 0) {
-    productosDiv.innerHTML = "";
-    mostrarProductos(filtered)
-  } else {
-    document.getElementById("productos").innerHTML = `<p>No se encontrÃ³ el producto</p>`;
-  }
-
-} */
 function searchInput(name) {
   fetch(`https://shop-api-production.up.railway.app/search?name=${name}`)
     .then((response) => response.json())
@@ -174,12 +166,11 @@ function getCategories() {
     .catch(error => console.log(error))
 }
 
-
 //renderizando categorias
 let categoriesDiv = document.querySelector(".sidebar-body")
 
 function showByCategories(element) {
-  categoriesDiv.innerHTML += `
+  categoriesDiv.innerHTML += /* html */`
   <a class="btn" data-id="${element.id}">
   <div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24"
       width="24" xmlns="http://www.w3.org/2000/svg">

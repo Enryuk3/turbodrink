@@ -174,7 +174,7 @@ main #search:focus{
 } */
 .shopping-cart {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto auto;
   gap: 16px;
   margin-bottom: 24px;
   align-items: center;
@@ -329,6 +329,7 @@ aside{
   background: rgb(242, 244, 247);
   color: rgb(29, 41, 57);
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .sidebar-body a:hover .count,
