@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda de Bebidas</title>
+  <title>TurboDrink | Tienda de Bebidas</title>
   <link rel="stylesheet" href="./styles/style.css">
   <link rel="stylesheet" href="./styles/iziToast.min.css">
 </head>
@@ -21,10 +21,9 @@
         </picture>
       </a>
       <ul class="nav">
-        <li><a href="./index.html">Inicio</a></li>
-        <li><a href="#">Tienda</a></li>
-        <li><a href="#">Nosotros</a></li>
-        <li><a href="#">Contacto</a></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      
       </ul>
       <ul>
         <li class="navbar-shopping-cart">
@@ -41,7 +40,7 @@
         <p class="title">Mi orden</p>
       </div>
       <div class="my-order-content"></div>
-      <div class="total-cart"></div>
+      <div class="total-cart"></div><span class="golito">eo</span>
     </aside>
 
     <input id="search" autocomplete="off" type="text" placeholder="¿Qué estás buscando hoy?">
@@ -54,7 +53,22 @@
 
     <div id="productos" class="productos"></div>
 
+
   </main>
+  <section id="contacto">
+    <div>
+      <form action="">
+        <label for="Nombre"></label>
+        <input type="text" id="Nombre" placeholder="Nombre"/>
+        <label for="Correo"></label>
+        <input type="email" id="Correo" placeholder="Correo">
+        <label for="Mensaje"></label>
+        <input type="text"/ id="Mensaje" placeholder="Mensaje">
+
+        <button type="button">  Enviar</button>
+      </form>
+    </div>
+  </section>
   <script src="./js/iziToast.min.js"></script>
   <script src="./js/main.js"></script>
 </body>

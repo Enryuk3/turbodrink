@@ -350,6 +350,24 @@ aside{
   border-radius: 6px;
 }
 
+/* Formulario */
+#contacto {
+  display: grid;
+  place-items: center;
+  height: 60vh;
+}
+
+#contacto > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#contacto > div > form {
+  display: flex;
+  flex-direction: column;
+}
+
 
 @media (max-width: 640px) {
   .product-detail {

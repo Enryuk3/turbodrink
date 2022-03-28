@@ -73,7 +73,10 @@ const addToCart = (cardPadre) => {
   } else {
     cart.push(producto);
   }
-  // console.log(cart);
+  
+  localStorage.setItem("cart", JSON.stringify(cart))
+  updateCount();
+  updateTotalCart()
   showCart();
 }
 
@@ -95,31 +98,36 @@ const showCart = () => {
         <button class="btn-restar" data-id="${id}">-</button>
         <button class="btn-borrar" data-id="${id}">x</button>
       </div>`
-    localStorage.setItem("cart", JSON.stringify(cart))
-    updateCount();
-    updateTotalCart();
   })
 }
 
 //Restar producto al hacer click
-const restarProducto = (productoRestar) => {
+const restarProducto = (idProductoRestar) => {
   let productoEncontrado = cart.find(
-    (element) => element.id === Number(productoRestar)
+    (element) => element.id === Number(idProductoRestar)
   );
   if (productoEncontrado) {
     productoEncontrado.cantidad--;
-    if (productoEncontrado.cantidad === 0) {
-      productoEncontrado.cantidad = 1;
+    if(productoEncontrado.cantidad < 1){
+      borrarProducto(idProductoRestar)
     }
   }
+  localStorage.setItem("cart", JSON.stringify(cart))
+  updateCount()
+  updateTotalCart()
   showCart();
 };
 
 //Borrar producto al hacer  click
-const borrarProducto = (productoBorrar) => {
-  cart = cart.filter(element => element.id !== Number(productoBorrar));
-  showCart();
-};
+ const borrarProducto = (idProductoBorrar) => {
+   cart = cart.filter(element => element.id !== Number(idProductoBorrar));
+
+   localStorage.setItem("cart", JSON.stringify(cart))
+   updateCount()
+   updateTotalCart()
+   showCart();
+ };
+
 
 const escucharBotonesSidebar = () => {
   sidebar.addEventListener("click", (e) => {
@@ -131,19 +139,20 @@ const escucharBotonesSidebar = () => {
     }
   });
 };
-
+/* Actualizador contador carrito */
 const updateCount = () => {
-  let total = cart.reduce((acc, ite) => acc + ite.cantidad, 0)
+  let cart = JSON.parse(localStorage.getItem("cart")); 
+  let total = cart.reduce((acc, ite) => acc + ite.cantidad, 0);
   document.querySelector(".navbar-shopping-cart div").textContent = total;
 }
 /* Sumatoria de precios del total del carrito */
 const updateTotalCart = () => {
-  let total = cart.reduce((acc, ite) => acc + ite.precio, 0)
-  console.log(total)
-  
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  let total = cart.reduce((acc, ite) => acc + (ite.precio*ite.cantidad), 0)
   document.querySelector(".total-cart").textContent = total;
 }
 
+/* Input de busqueda */
 function searchInput(name) {
   fetch(`https://shop-api-production.up.railway.app/search?name=${name}`)
     .then((response) => response.json())
@@ -158,6 +167,7 @@ inputSearch.addEventListener('input', (e) => {
   searchInput(name)
 })
 
+/* Obtener Categorias */
 function getCategories() {
   let url = 'https://shop-api-production.up.railway.app/categories'
   fetch(url)
