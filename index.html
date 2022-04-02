@@ -8,23 +8,37 @@
   <title>TurboDrink | Tienda de Bebidas</title>
   <link rel="stylesheet" href="./styles/style.css">
   <link rel="stylesheet" href="./styles/iziToast.min.css">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
 </head>
 
 <body>
   <header>
-    <div class="container">
-
-      <a href="./index.html">
-        <picture>
-          <source media="(min-width:600px)" srcset="./images/logo-dark.png">
-          <img src="./images/logo-small.png" alt="Logo de la tienda">
-        </picture>
+    <img src="./images/icons/icon_menu.svg" alt="" class="menu">
+    <div class="navbar-left">
+      <a href="./index.html" class="navbar-logo">
+        <img src="./images/logo-dark.png" class="logo" alt="logo">
       </a>
-      <ul class="nav">
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      
+      <ul>
+        <li><a href="" id="todo">Todo</a></li>
+       <!--  <li>
+        <a href="">Pisco</a>
+        </li>
+        <li>
+          <a href="">Ron</a>
+        </li>
+        <li>
+          <a href="">Bebidas</a>
+        </li>
+        <li>
+          <a href="">Snack</a>
+        </li>
+        <li>
+          <a href="">Cerveza</a>
+        </li> -->
       </ul>
+    </div>
+    <div class="navbar-right">
       <ul>
         <li class="navbar-shopping-cart">
           <img src="./images/icons/icon_shopping_cart.svg" alt="shopping cart">
@@ -32,6 +46,7 @@
         </li>
       </ul>
     </div>
+    
   </header>
   <main>
     <aside class="product-detail">
@@ -40,37 +55,45 @@
         <p class="title">Mi orden</p>
       </div>
       <div class="my-order-content"></div>
-      <div class="total-cart"></div><span class="golito">eo</span>
-    </aside>
 
-    <input id="search" autocomplete="off" type="text" placeholder="¿Qué estás buscando hoy?">
-    <div class="container-sidebar">
-      <div class="sidebar">
-        <div class="sidebar-body">
+      <div class="order"></div>
+
+      <div>
+        <button class="primary-button add-to-cart-button" id="shopButton">Pagar</button>
+      </div>
+    </aside>
+    
+    
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+      <!-- Contenido Modal -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="form-container">
+          <h1 class="title">Ingrese sus datos</h1>
+          <form class="form">
+            <label for="nombre">Nombres:</label>
+            <input type="text" name="nombre" id="nombre" placeholder="Camilo Lopez" autocomplete="off" required class="input "/>
+            <label for="email">Correo:</label>
+            <input type="email" name="email" id="email" placeholder="camilolopez@gmail.com" autocomplete="off" required class="input input-email">
+            <input type="button" class="primary-button" id="buttonBuy" value="Finalizar compra"/>
+          </form>
         </div>
       </div>
     </div>
-
+    
+    <input id="search" autocomplete="off" type="text" placeholder="¿Qué estás buscando hoy?">
     <div id="productos" class="productos"></div>
 
-
   </main>
-  <section id="contacto">
-    <div>
-      <form action="">
-        <label for="Nombre"></label>
-        <input type="text" id="Nombre" placeholder="Nombre"/>
-        <label for="Correo"></label>
-        <input type="email" id="Correo" placeholder="Correo">
-        <label for="Mensaje"></label>
-        <input type="text"/ id="Mensaje" placeholder="Mensaje">
-
-        <button type="button">  Enviar</button>
-      </form>
-    </div>
-  </section>
+  <footer>
+    <p> Drinkshop | Todos los Derechos Reservados </p>
+  </footer>
+  <!-- <script src="sweetalert2.all.min.js"></script> -->
   <script src="./js/iziToast.min.js"></script>
   <script src="./js/main.js"></script>
+  <script src="./js/modal.js"></script>
+  
 </body>
 
 </html>

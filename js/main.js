@@ -1,13 +1,19 @@
 //Funciones
 const productosDiv = document.getElementById("productos");
 const btnCart = document.querySelector(".navbar-shopping-cart")
+const arrow = document.querySelector(".title-container img")
 const divCart = document.querySelector(".product-detail")
 const sidebar = document.querySelector(".my-order-content")
-const arrow = document.querySelector(".title-container img")
 const inputSearch = document.getElementById("search")
-const totalCart = document.querySelector(".total-cart")
+
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Cuando inicia,o el Contenido del DOM se vuelva a cargar, actualizar el contador y cantidad total
+document.addEventListener('DOMContentLoaded',() => {
+  updateCount();
+  updateTotalCart();
+})
 
 btnCart.addEventListener("click", () => {
   divCart.classList.toggle("active");
@@ -17,6 +23,7 @@ arrow.addEventListener("click", () => {
   divCart.classList.toggle("active")
 })
 
+// Obtener todos los productos mediante un fetch a la url de la API
 function getData() {
   let url = 'https://shop-api-production.up.railway.app/products'
   fetch(url)
@@ -26,7 +33,7 @@ function getData() {
 }
 
 function mostrarProductos(product) {
-  productosDiv.innerHTML += `
+  productosDiv.innerHTML += /* html */ `
       <div class="producto">
         <div class="producto-img">
           <img src="${product.url_image || "https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"}" alt="${product.name}">
@@ -95,8 +102,8 @@ const showCart = () => {
           <p>Cantidad: ${cantidad}</p>
         </div>
         <p>$<span>${precio*cantidad}</span></p>
-        <button class="btn-restar" data-id="${id}">-</button>
-        <button class="btn-borrar" data-id="${id}">x</button>
+        <span class="btn-restar" data-id="${id}">&#45</span>
+        <span class="btn-borrar" data-id="${id}">&times</span>
       </div>`
   })
 }
@@ -128,7 +135,7 @@ const restarProducto = (idProductoRestar) => {
    showCart();
  };
 
-
+// Oir eventos para los botones restar(-) y eliminar(x)
 const escucharBotonesSidebar = () => {
   sidebar.addEventListener("click", (e) => {
     if (e.target.classList.contains("btn-restar")) {
@@ -139,7 +146,8 @@ const escucharBotonesSidebar = () => {
     }
   });
 };
-/* Actualizador contador carrito */
+
+/* Actualizar contador carrito */
 const updateCount = () => {
   let cart = JSON.parse(localStorage.getItem("cart")); 
   let total = cart.reduce((acc, ite) => acc + ite.cantidad, 0);
@@ -149,7 +157,12 @@ const updateCount = () => {
 const updateTotalCart = () => {
   let cart = JSON.parse(localStorage.getItem("cart"));
   let total = cart.reduce((acc, ite) => acc + (ite.precio*ite.cantidad), 0)
-  document.querySelector(".total-cart").textContent = total;
+  document.querySelector(".order").innerHTML = `
+    <p>
+      <span>Total</span> 
+    </p>
+    <p>$${total}</p>
+    `;
 }
 
 /* Input de busqueda */
@@ -167,43 +180,35 @@ inputSearch.addEventListener('input', (e) => {
   searchInput(name)
 })
 
-/* Obtener Categorias */
+
+// Obtener Categorias 
 function getCategories() {
   let url = 'https://shop-api-production.up.railway.app/categories'
   fetch(url)
     .then((response) => response.json())
-    .then((data) => data.forEach(element => showByCategories(element)))
+    .then((data) => data.forEach(element => showCategories(element)))
     .catch(error => console.log(error))
 }
 
-//renderizando categorias
-let categoriesDiv = document.querySelector(".sidebar-body")
-
-function showByCategories(element) {
-  categoriesDiv.innerHTML += /* html */`
-  <a class="btn" data-id="${element.id}">
-  <div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24"
-      width="24" xmlns="http://www.w3.org/2000/svg">
-      <path fill="none" d="M0 0h24v24H0z"></path>
-      <path
-        d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z">
-      </path>
-    </svg><span>${element.name}</span>
-  </div>
-  </a>
-  <button></button>
-  `
-  const btnCategories = document.querySelectorAll(".btn")
-  btnCategories.forEach((e) =>
-    e.addEventListener("click", (e) => {
-      let categoryId = (e.target.getAttribute("data-id"))
-      orderByCategories(categoryId)
-    })
-  )
+// Conseguir La lista donde se va a mostrar las categorias
+let categoriesList = document.querySelector(".navbar-left ul")
+// Mostrar categorias
+const showCategories = (element) => {
+  categoriesList.innerHTML += /* html */`
+    <li>
+      <a data-id="${element.id}">${element.name}</a>
+    </li>
+    `
+  const btnCategory = document.querySelectorAll("a")
+    btnCategory.forEach((e) =>
+      e.addEventListener("click", (e) => {
+        let categoryId = (e.target.getAttribute("data-id"))
+        orderByCategories(categoryId)
+      })
+    )
 }
 
-
-//filtrar por categorias
+// Cuando el usuario clickea en cada categoria, limpias el contenedor y mostrar por categoria elegida
 function orderByCategories(id) {
   productosDiv.innerHTML = ``;
   fetch(`https://shop-api-production.up.railway.app/order_by_category?category_id=${id}`)
@@ -211,6 +216,10 @@ function orderByCategories(id) {
     .then((data) => data.forEach(element => mostrarProductos(element)))
     .catch(error => console.log(error))
 }
+// Conseguir el boton para categoria Todo
+let todo = document.querySelector('#todo')
+// Cuando el usuario clickea en el boton Todo, ejecturar la funcion getData
+todo.addEventListener('click', getData )
 
 
 getData();
