@@ -206,6 +206,12 @@ main #search:focus{
   font-weight: bold;
   height: 50px;
 }
+
+.primary-button:disabled, .primary-button[disabled] {
+  /* border: 1px solid #999999; */
+  background-color: #cccccc;
+  color: #666666;
+}
 .btn-borrar, .btn-restar {
   color: #aaaaaa;
   float: right;
