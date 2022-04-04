@@ -10,7 +10,7 @@ const inputSearch = document.getElementById("search")
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // Cuando inicia,o el Contenido del DOM se vuelva a cargar, actualizar el contador y cantidad total
-document.addEventListener('DOMContentLoaded',() => {
+document.addEventListener('DOMContentLoaded', () => {
   updateCount();
   updateTotalCart();
 })
@@ -55,8 +55,8 @@ function mostrarProductos(product) {
       let cardPadre = e.target.parentElement;
       addToCart(cardPadre);
       iziToast.success({
-        id:'success',
-        title: 'OK',
+        id: 'success',
+        title: 'Genial!',
         message: 'Producto agregado al carrito'
       });
     })
@@ -80,18 +80,18 @@ const addToCart = (cardPadre) => {
   } else {
     cart.push(producto);
   }
-  
+
   localStorage.setItem("cart", JSON.stringify(cart))
   updateCount();
   updateTotalCart()
   showCart();
 }
 
-
+/* Pintar carrito */
 const showCart = () => {
   sidebar.innerHTML = "";
   cart.forEach((element) => {
-    let {nombre, precio, image, cantidad, id} = element;
+    let { nombre, precio, image, cantidad, id } = element;
     sidebar.innerHTML += /* html */`
       <div class="shopping-cart">
         <figure>
@@ -101,11 +101,12 @@ const showCart = () => {
           <p>${nombre}</p>
           <p>Cantidad: ${cantidad}</p>
         </div>
-        <p>$<span>${precio*cantidad}</span></p>
+        <p>$<span>${precio * cantidad}</span></p>
         <span class="btn-restar" data-id="${id}">&#45</span>
         <span class="btn-borrar" data-id="${id}">&times</span>
       </div>`
   })
+  
 }
 
 //Restar producto al hacer click
@@ -115,7 +116,7 @@ const restarProducto = (idProductoRestar) => {
   );
   if (productoEncontrado) {
     productoEncontrado.cantidad--;
-    if(productoEncontrado.cantidad < 1){
+    if (productoEncontrado.cantidad < 1) {
       borrarProducto(idProductoRestar)
     }
   }
@@ -126,14 +127,14 @@ const restarProducto = (idProductoRestar) => {
 };
 
 //Borrar producto al hacer  click
- const borrarProducto = (idProductoBorrar) => {
-   cart = cart.filter(element => element.id !== Number(idProductoBorrar));
+const borrarProducto = (idProductoBorrar) => {
+  cart = cart.filter(element => element.id !== Number(idProductoBorrar));
 
-   localStorage.setItem("cart", JSON.stringify(cart))
-   updateCount()
-   updateTotalCart()
-   showCart();
- };
+  localStorage.setItem("cart", JSON.stringify(cart))
+  updateCount()
+  updateTotalCart()
+  showCart();
+};
 
 // Oir eventos para los botones restar(-) y eliminar(x)
 const escucharBotonesSidebar = () => {
@@ -149,20 +150,31 @@ const escucharBotonesSidebar = () => {
 
 /* Actualizar contador carrito */
 const updateCount = () => {
-  let cart = JSON.parse(localStorage.getItem("cart")); 
+  let cart = JSON.parse(localStorage.getItem("cart"));
   let total = cart.reduce((acc, ite) => acc + ite.cantidad, 0);
   document.querySelector(".navbar-shopping-cart div").textContent = total;
 }
 /* Sumatoria de precios del total del carrito */
 const updateTotalCart = () => {
   let cart = JSON.parse(localStorage.getItem("cart"));
-  let total = cart.reduce((acc, ite) => acc + (ite.precio*ite.cantidad), 0)
+  let total = cart.reduce((acc, ite) => acc + (ite.precio * ite.cantidad), 0)
+  let btn = document.querySelector("#shopButton")
+  
+  if (cart.length === 0) {/* Si el carro esta vacio */
+    document.querySelector(".order").innerHTML = `<p><span>Carrito vacío, comience a comprar!</span></p>`;
+    btn.setAttribute('disabled','');
+   return
+  } else {
+    btn.removeAttribute('disabled');
+  }
+
   document.querySelector(".order").innerHTML = `
     <p>
       <span>Total</span> 
     </p>
     <p>$${total}</p>
     `;
+  showCart()
 }
 
 /* Input de busqueda */
@@ -200,12 +212,12 @@ const showCategories = (element) => {
     </li>
     `
   const btnCategory = document.querySelectorAll("a")
-    btnCategory.forEach((e) =>
-      e.addEventListener("click", (e) => {
-        let categoryId = (e.target.getAttribute("data-id"))
-        orderByCategories(categoryId)
-      })
-    )
+  btnCategory.forEach((e) =>
+    e.addEventListener("click", (e) => {
+      let categoryId = (e.target.getAttribute("data-id"))
+      orderByCategories(categoryId)
+    })
+  )
 }
 
 // Cuando el usuario clickea en cada categoria, limpias el contenedor y mostrar por categoria elegida
@@ -219,7 +231,7 @@ function orderByCategories(id) {
 // Conseguir el boton para categoria Todo
 let todo = document.querySelector('#todo')
 // Cuando el usuario clickea en el boton Todo, ejecturar la funcion getData
-todo.addEventListener('click', getData )
+todo.addEventListener('click', getData)
 
 
 getData();
